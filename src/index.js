@@ -7,9 +7,12 @@ const files = require('../lib/files');
 
 clear();
 
-// 先来画一个牛逼的
+// 先来画一个牛逼的Mech
 console.log(
   chalk.yellow(
-    figlet.textSync('MECH', {horizontalLayout: 'full'})
+    figlet.textSync('MECH CLI', {horizontalLayout: 'full'})
   )
 );
+
+// 开始生成
+console.log('----- start program -----');

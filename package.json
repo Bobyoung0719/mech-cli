@@ -5,6 +5,9 @@
   "repository": "https://github.com/Bobyoung0719/mech-cli.git",
   "author": "Bobyoung0719 <Bobyoung0719@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  },
   "dependencies": {
     "@octokit/rest": "^17.11.0",
     "chalk": "^4.1.0",
