@@ -1,0 +1,21 @@
+{
+  "name": "mech-cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Bobyoung0719/mech-cli.git",
+  "author": "Bobyoung0719 <Bobyoung0719@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/rest": "^17.11.0",
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "clui": "^0.3.6",
+    "configstore": "^5.0.1",
+    "figlet": "^1.4.0",
+    "inquirer": "^7.1.0",
+    "lodash": "^4.17.15",
+    "minimist": "^1.2.5",
+    "simple-git": "^2.6.0",
+    "touch": "^3.1.0"
+  }
+}
