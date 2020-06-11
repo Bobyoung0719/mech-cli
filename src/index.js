@@ -48,6 +48,9 @@ const run = async () => {
     // 重新编辑package.json 
     editPackJson(projectName, projectAuthor, projectDescription);
 
+    // npm install
+    
+
   } catch (error) {
     console.log(error)
   }
