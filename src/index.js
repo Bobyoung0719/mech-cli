@@ -4,9 +4,9 @@ const clear = require('clear');
 const figlet = require('figlet');
 
 const {scaffoldPool} = require('../lib/params');
-const {directoryExists} = require('../lib/files');
 const {gitCloneStart} = require('../lib/clone');
 const {askGithubCredentials} = require('../lib/inquirer');
+const {directoryExists, editPackJson} = require('../lib/files');
 
 const spin = (t1, t2 = '') => new CLUI.Spinner(t1, t2);
 
@@ -40,9 +40,14 @@ const run = async () => {
     }
 
     const repoPath = scaffoldPool[projectScaffold];
-    spin('git clone start, please waitting', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']).start();
+    // spin('git clone start, please waitting', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']).start();
     await gitCloneStart(repoPath, projectName);
-    spin('git clone finished').stop();
+    // spin('git clone finished').stop();
+
+    // 重新编辑package.json 
+
+    editPackJson(projectName, projectAuthor, projectDescription)
+
   } catch (error) {
     console.log(error)
   }
