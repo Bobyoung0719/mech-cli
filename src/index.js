@@ -17,8 +17,8 @@ const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse')
 clear();
 
 
-copyTempToProject(re => {
-  console.log(re)
+copyTempToProject(res =>{
+  console.log(res, '==')
 })
 
 
