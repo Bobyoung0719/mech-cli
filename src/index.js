@@ -1,17 +1,30 @@
-const CLUI = require('clui');
+const path = require('path');
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
+const {Octokit} = require('@octokit/rest');
+const {scaffoldPool, Spinner} = require('../lib/params');
 
-const {scaffoldPool} = require('../lib/params');
-const {gitCloneStart} = require('../lib/clone');
-const {editPackJson} = require('../lib/files');
-const {askGithubCredentials} = require('../lib/inquirer');
+const {cloneRemoteWareHouse, cloneWareHouseTemp} = require('../lib/clone');
 
+const {editPackJson, copyTempToProject} = require('../lib/files');
 
-const spin = (t1, t2 = '') => new CLUI.Spinner(t1, t2);
+const {askUserPassPort} = require('../lib/inquirer');
+const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
+const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
+
 
 clear();
+
+
+copyTempToProject(re => {
+  console.log(re)
+})
+
+
+
+return;
+
 
 // 先来画一个牛逼的图案
 console.log(chalk.yellow(figlet.textSync('MECH CLI', {horizontalLayout: 'full'})));
@@ -19,41 +32,47 @@ console.log(chalk.yellow(figlet.textSync('MECH CLI', {horizontalLayout: 'full'})
 // 开始生成
 console.log(chalk.yellow('<----- Let`s start a new project ----->'));
 
-// 用户交互式命令
-const run = async () => {
+// 执行逻辑
+async function run() {
   try {
-    // 获取用户输入信息
-    const {
-      isSureRes,
-      projectName,
-      projectAuthor, 
-      projectScaffold, 
-      projectDescription
-    } = await askGithubCredentials();
+    // 获取本地存储的token
+    let storeToken = getStoredGithubToken();
+    console.log('本地token:', storeToken);
 
-    if (!isSureRes) {
-      console.log(chalk.yellow(`<----- you have choose 'No' to end!!! ----->`));
+    // 如本地未存储token，通过账户和密码获取token
+    if(!storeToken) {
+      // 获取账号及密码
+      const {userName, passWord} = await askUserPassPort();
+      storeToken = await getPersonalAccessToken(userName, passWord);
 
-      process.exit();
+      console.log('newtoken:', storeToken);
     }
 
-    // 仓库地址
-    const repoPath = scaffoldPool[projectScaffold];
-    // spin('git clone start, please waitting', ['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']).start();
+    // 创建octokit实例
+    const gitHub = new Octokit({auth: storeToken});
 
-    // 克隆仓库
-    await gitCloneStart(repoPath, projectName);
-    // spin('git clone finished').stop();
+    // 创建远程仓库
+    const {
+      sshUrl,
+      cloneUrl,
+      projectName,
+      projectAuthor, 
+      projectScaffold,
+    } = await createRemoteWareHouse(gitHub);
 
-    // 重新编辑package.json 
-    editPackJson(projectName, projectAuthor, projectDescription);
+    console.log(cloneUrl, projectAuthor, projectScaffold);
 
-    // npm install
-    
+    // clone 远程仓库到本地（项目）
+    await cloneRemoteWareHouse(cloneUrl, projectName);
+
+    // 克隆 仓库模板
+    await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
+
+    // 拷贝模板到项目中
 
   } catch (error) {
     console.log(error)
   }
-} 
+}
 
-run();
+// run();
