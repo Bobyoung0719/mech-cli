@@ -14,7 +14,7 @@ const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
 const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
 
 
-clear();
+// clear();clear
 
 
 copyTempToProject(res =>{
