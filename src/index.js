@@ -14,16 +14,16 @@ const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
 const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
 
 
-// clear();clear
+clear();
 
 
-copyTempToProject(res =>{
-  console.log(res, '==')
-})
+// copyTempToProject(res =>{
+//   console.log(res, '==')
+// })
 
 
 
-return;
+// return;
 
 
 // 先来画一个牛逼的图案
@@ -60,6 +60,9 @@ async function run() {
       projectScaffold,
     } = await createRemoteWareHouse(gitHub);
 
+    // 初始化仓库
+    await initRemoteWareHouse(sshUrl);
+
     console.log(cloneUrl, projectAuthor, projectScaffold);
 
     // clone 远程仓库到本地（项目）
@@ -69,10 +72,13 @@ async function run() {
     await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
     // 拷贝模板到项目中
+    copyTempToProject(projectScaffold, projectName, res => {
+      console.log(res, '==')
+    });
 
   } catch (error) {
     console.log(error)
   }
 }
 
-// run();
+run();
