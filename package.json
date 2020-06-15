@@ -2,11 +2,16 @@
   "name": "mech-cli",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/Bobyoung0719/mech-cli.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bobyoung0719/mech-cli.git"
+  },
   "author": "Bobyoung0719 <Bobyoung0719@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "init": "npm init -y",
+    "test": "npm -v"
   },
   "bin": {
     "mech-cli": "./src/index.js"
@@ -24,5 +29,16 @@
     "minimist": "^1.2.5",
     "simple-git": "^2.6.0",
     "touch": "^3.1.0"
-  }
+  },
+  "description": "自动生成脚手架工具",
+  "bugs": {
+    "url": "https://github.com/Bobyoung0719/mech-cli/issues"
+  },
+  "homepage": "https://github.com/Bobyoung0719/mech-cli#readme",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "devDependencies": {},
+  "keywords": []
 }

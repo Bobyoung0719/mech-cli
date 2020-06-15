@@ -4,6 +4,7 @@ const path = require('path');
 const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
+
 const {Octokit} = require('@octokit/rest');
 const {scaffoldPool, Spinner} = require('../lib/params');
 
@@ -15,9 +16,19 @@ const {askUserPassPort} = require('../lib/inquirer');
 const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
 const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
 
+const {exec} = require('child_process');
 
-clear();
+// clear();
 
+console.log(path.resolve(process.cwd()));
+const pathSrc = path.resolve(process.cwd(), 'test'); 
+console.log(pathSrc)
+
+exec('npm init -y', pathSrc, (err, stu, std) => {
+  console.log(err, stu, std)
+})
+
+return;
 
 // 先来画一个牛逼的图案
 console.log(chalk.yellow(figlet.textSync('MECH CLI', {horizontalLayout: 'full'})));
@@ -54,12 +65,20 @@ async function run() {
     } = await createRemoteWareHouse(gitHub);
 
     console.log(cloneUrl, projectAuthor, projectScaffold);
+    // childExec('npm run init');
 
-    // clone 远程仓库到本地（项目）
-    // await cloneRemoteWareHouse(cloneUrl, projectName);
+    // clone 远程仓库到本地（项目）并初始化
+    await cloneRemoteWareHouse(cloneUrl, projectName);
 
-    // 初始化仓库
-    await initRemoteWareHouse(sshUrl);
+    process.exec(`/${projectName}`, {
+      cwd: 'npm run init'
+    });
+    
+
+    // 建立本地仓库并推送到远端
+    // const isDone = await initRemoteWareHouse(sshUrl);
+
+    // console.log('allDone:', isDone)
 
     // 克隆 仓库模板
     // await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
