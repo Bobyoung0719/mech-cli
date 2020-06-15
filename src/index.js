@@ -13,19 +13,11 @@ const {askUserPassPort} = require('../lib/inquirer');
 const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
 const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
 
+const {exec} = require('child_process');
 
-// clear();clear
+clear();
 
-
-copyTempToProject(res =>{
-  console.log(res, '==')
-})
-
-
-
-return;
-
-
+// return;
 // 先来画一个牛逼的图案
 console.log(chalk.yellow(figlet.textSync('MECH CLI', {horizontalLayout: 'full'})));
 
@@ -65,13 +57,19 @@ async function run() {
     // clone 远程仓库到本地（项目）
     await cloneRemoteWareHouse(cloneUrl, projectName);
 
+    // 初始化仓库
+    exec('npm init -y', {cwd: path.resolve(process.cwd(), projectName)}, (err, a1, a2) => {
+      console.log(err, a1, a2);
+    })
+    
+
     // 克隆 仓库模板
-    await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
+    // await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
     // 拷贝模板到项目中
 
   } catch (error) {
-    console.log(error)
+    // console.log(error)
   }
 }
 

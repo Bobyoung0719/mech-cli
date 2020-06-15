@@ -17,7 +17,7 @@
     "mech-cli": "./src/index.js"
   },
   "dependencies": {
-    "@octokit/auth-basic": "^1.4.5",
+    "@octokit/auth-app": "^2.4.7",
     "@octokit/rest": "^17.11.0",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
