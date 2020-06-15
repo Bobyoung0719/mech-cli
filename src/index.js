@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const path = require('path');
 const chalk = require('chalk');
 const clear = require('clear');
@@ -15,15 +17,6 @@ const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse')
 
 
 clear();
-
-
-// copyTempToProject(res =>{
-//   console.log(res, '==')
-// })
-
-
-
-// return;
 
 
 // 先来画一个牛逼的图案
@@ -60,21 +53,21 @@ async function run() {
       projectScaffold,
     } = await createRemoteWareHouse(gitHub);
 
-    // 初始化仓库
-    await initRemoteWareHouse(sshUrl);
-
     console.log(cloneUrl, projectAuthor, projectScaffold);
 
     // clone 远程仓库到本地（项目）
-    await cloneRemoteWareHouse(cloneUrl, projectName);
+    // await cloneRemoteWareHouse(cloneUrl, projectName);
+
+    // 初始化仓库
+    await initRemoteWareHouse(sshUrl);
 
     // 克隆 仓库模板
-    await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
+    // await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
     // 拷贝模板到项目中
-    copyTempToProject(projectScaffold, projectName, res => {
-      console.log(res, '==')
-    });
+    // copyTempToProject(projectScaffold, projectName, res => {
+    //   console.log(res, '==')
+    // });
 
   } catch (error) {
     console.log(error)

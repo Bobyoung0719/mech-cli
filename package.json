@@ -8,6 +8,9 @@
   "scripts": {
     "start": "node src/index.js"
   },
+  "bin": {
+    "mech-cli": "./src/index.js"
+  },
   "dependencies": {
     "@octokit/auth-basic": "^1.4.5",
     "@octokit/rest": "^17.11.0",
