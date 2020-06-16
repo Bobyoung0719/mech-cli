@@ -16,15 +16,6 @@ const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse')
 const {exec, execSync} = require('child_process');
 clear();
 
-// copyTempToProject('C2', 'C1', async () => {
-//   console.log('完成---------');
-
-//   const da = await execSync(`rm -rf C2`);
-
-//   console.log(da, '==')
-// });
-
-// return;
 // 先来画一个牛逼的图案
 console.log(chalk.yellow(figlet.textSync('MECH CLI', {horizontalLayout: 'full'})));
 
@@ -75,12 +66,15 @@ async function run() {
     // 拷贝模板到项目中仓库中
     copyTempToProject(projectScaffold, projectName, async () => {
       console.log('copy完成---------');
+    
+      exec(`git remote set-url origin ${sshUrl}`, null, () => {
+        console.log('set Ok ')
+      });
+
       // 删除模板
       exec(`rm -rf ${projectScaffold}`, null, () => {
         console.log('delete temp is Ok ')
       });
-
-      // await initRemoteWareHouse(sshUrl);
     });
 
   } catch (error) {
