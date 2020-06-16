@@ -7,15 +7,22 @@ const {scaffoldPool, Spinner} = require('../lib/params');
 
 const {cloneRemoteWareHouse, cloneWareHouseTemp} = require('../lib/clone');
 
-const {editPackJson, copyTempToProject} = require('../lib/files');
+const {copyTempToProject} = require('../lib/files');
 
 const {askUserPassPort} = require('../lib/inquirer');
 const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
 const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
 
-const {exec} = require('child_process');
-
+const {exec, execSync} = require('child_process');
 clear();
+
+// copyTempToProject('C2', 'C1', async () => {
+//   console.log('完成---------');
+
+//   const da = await execSync(`rm -rf C2`);
+
+//   console.log(da, '==')
+// });
 
 // return;
 // 先来画一个牛逼的图案
@@ -58,15 +65,23 @@ async function run() {
     await cloneRemoteWareHouse(cloneUrl, projectName);
 
     // 初始化仓库
-    exec('npm init -y', {cwd: path.resolve(process.cwd(), projectName)}, (err, a1, a2) => {
-      console.log(err, a1, a2);
-    })
+    const isOK = execSync('npm init -y', {cwd: pathStr(projectName)});
+
+    console.log('init ok', isOK)
     
-
     // 克隆 仓库模板
-    // await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
+    await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
-    // 拷贝模板到项目中
+    // 拷贝模板到项目中仓库中
+    copyTempToProject(projectScaffold, projectName, async () => {
+      console.log('完成---------');
+      // 删除模板
+      exec(`rm -rf ${projectScaffold}`, null, () => {
+        console.log('delete ok ')
+      });
+
+      await initRemoteWareHouse(cloneUrl);
+    });
 
   } catch (error) {
     // console.log(error)
@@ -74,3 +89,7 @@ async function run() {
 }
 
 run();
+
+function pathStr(name) {
+  return path.resolve(process.cwd(), name);
+}
