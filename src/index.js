@@ -65,22 +65,22 @@ async function run() {
     await cloneRemoteWareHouse(cloneUrl, projectName);
 
     // 初始化仓库
-    const isOK = execSync('npm init -y', {cwd: pathStr(projectName)});
+    execSync('npm init -y', {cwd: pathStr(projectName)});
 
-    console.log('init ok', isOK)
+    console.log('init ok')
     
     // 克隆 仓库模板
     await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
     // 拷贝模板到项目中仓库中
     copyTempToProject(projectScaffold, projectName, async () => {
-      console.log('完成---------');
+      console.log('copy完成---------');
       // 删除模板
       exec(`rm -rf ${projectScaffold}`, null, () => {
-        console.log('delete ok ')
+        console.log('delete temp is Ok ')
       });
 
-      await initRemoteWareHouse(cloneUrl);
+      // await initRemoteWareHouse(sshUrl);
     });
 
   } catch (error) {
