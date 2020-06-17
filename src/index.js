@@ -3,20 +3,23 @@ const chalk = require('chalk');
 const clear = require('clear');
 const figlet = require('figlet');
 const {Octokit} = require('@octokit/rest');
-const {scaffoldPool, Spinner} = require('../lib/params');
+const {execSync} = require('child_process');
 
-const {cloneRemoteWareHouse, cloneWareHouseTemp} = require('../lib/clone');
-
+const scaffoldPool= require('../lib/params');
 const {copyTempToProject} = require('../lib/files');
+const {getGithubToken} = require('../lib/inquirer');
+const {createRemoteWareHouse} = require('../lib/warehouse');
+const {cloneRemoteWareHouse, cloneWareHouseTemp} = require('../lib/clone');
+const {getStoredGithubToken, authenticityAccessToken} = require('../lib/github');
 
-const {askUserPassPort} = require('../lib/inquirer');
-const {getStoredGithubToken, getPersonalAccessToken} = require('../lib/github');
-const {createRemoteWareHouse, initRemoteWareHouse} = require('../lib/warehouse');
+const {spin1, spin2, spin3, spin4} = require('../lib/spinner');
+// const s1 = spin1(),
+//       s2 = spin2(),
+//       s3 = spin3(),
+//       s4 = spin4(['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']);
 
-const {exec, execSync} = require('child_process');
-clear();
-
-// 先来画一个牛逼的图案
+clear();      
+// 先来画一个**的图案
 console.log(chalk.yellow(figlet.textSync('MECH CLI', {horizontalLayout: 'full'})));
 
 // 开始生成
@@ -25,60 +28,48 @@ console.log(chalk.yellow('<----- Let`s start a new project ----->'));
 // 执行逻辑
 async function run() {
   try {
+    spin1.start();
     // 获取本地存储的token
     let storeToken = getStoredGithubToken();
-    console.log('本地token:', storeToken);
 
     // 如本地未存储token，通过账户和密码获取token
     if(!storeToken) {
       // 获取账号及密码
-      const {userName, passWord} = await askUserPassPort();
-      storeToken = await getPersonalAccessToken(userName, passWord);
-
-      console.log('newtoken:', storeToken);
+      const {accessToken} = await getGithubToken();
+      storeToken = await authenticityAccessToken(accessToken);
     }
 
     // 创建octokit实例
     const gitHub = new Octokit({auth: storeToken});
+    spin1.stop();
 
     // 创建远程仓库
-    const {
-      sshUrl,
-      cloneUrl,
-      projectName,
-      projectAuthor, 
-      projectScaffold,
-    } = await createRemoteWareHouse(gitHub);
-
-    console.log(cloneUrl, projectAuthor, projectScaffold);
-
-    // clone 远程仓库到本地（项目）
+    const {cloneUrl, projectName, projectScaffold, projectAuthor} = await createRemoteWareHouse(gitHub);
+    
+    spin2.start();
+    // 拉去远程仓库到本地（项目）
     await cloneRemoteWareHouse(cloneUrl, projectName);
+    spin2.stop();
 
+    spin3.start();
     // 初始化仓库
     execSync('npm init -y', {cwd: pathStr(projectName)});
 
-    console.log('init ok')
-    
-    // 克隆 仓库模板
+    // 克隆仓库模板
     await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
     // 拷贝模板到项目中仓库中
-    copyTempToProject(projectScaffold, projectName, async () => {
-      console.log('copy完成---------');
-    
-      exec(`git remote set-url origin ${sshUrl}`, null, () => {
-        console.log('set Ok ')
-      });
-
+    copyTempToProject(projectScaffold, projectName, projectAuthor, async () => {
+      // execSync(`git remote set-url origin ${cloneUrl}`, {cwd: pathStr(projectName)});
+      spin3.stop();
       // 删除模板
-      exec(`rm -rf ${projectScaffold}`, null, () => {
-        console.log('delete temp is Ok ')
-      });
+      spin4.start();
+      // execSync(`rm -rf ${projectScaffold}`);
+      // execSync('npm install', {cwd: pathStr(projectName)});
+      // spin4.stop();
     });
-
   } catch (error) {
-    // console.log(error)
+    console.log(error)
   }
 }
 
