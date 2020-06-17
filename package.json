@@ -20,6 +20,7 @@
     "@octokit/auth-app": "^2.4.7",
     "@octokit/auth-oauth-app": "^3.0.4",
     "@octokit/auth-token": "^2.4.2",
+    "@octokit/request": "^5.4.5",
     "@octokit/rest": "^17.11.0",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
