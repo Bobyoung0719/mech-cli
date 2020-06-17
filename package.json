@@ -9,18 +9,13 @@
   "author": "Bobyoung0719 <Bobyoung0719@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node src/index.js",
-    "init": "npm init -y",
-    "test": "npm -v"
+    "start": "node src/index.js"
   },
   "bin": {
     "mech-cli": "./src/index.js"
   },
   "dependencies": {
-    "@octokit/auth-app": "^2.4.7",
-    "@octokit/auth-oauth-app": "^3.0.4",
     "@octokit/auth-token": "^2.4.2",
-    "@octokit/request": "^5.4.5",
     "@octokit/rest": "^17.11.0",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
@@ -28,10 +23,8 @@
     "configstore": "^5.0.1",
     "figlet": "^1.4.0",
     "inquirer": "^7.1.0",
-    "lodash": "^4.17.15",
     "minimist": "^1.2.5",
-    "simple-git": "^2.6.0",
-    "touch": "^3.1.0"
+    "simple-git": "^2.6.0"
   },
   "description": "自动生成脚手架工具",
   "bugs": {

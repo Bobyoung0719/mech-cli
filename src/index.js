@@ -13,10 +13,6 @@ const {cloneRemoteWareHouse, cloneWareHouseTemp} = require('../lib/clone');
 const {getStoredGithubToken, authenticityAccessToken} = require('../lib/github');
 
 const {spin1, spin2, spin3, spin4} = require('../lib/spinner');
-// const s1 = spin1(),
-//       s2 = spin2(),
-//       s3 = spin3(),
-//       s4 = spin4(['⣾','⣽','⣻','⢿','⡿','⣟','⣯','⣷']);
 
 clear();      
 // 先来画一个**的图案
