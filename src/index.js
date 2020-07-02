@@ -61,7 +61,7 @@ async function run() {
       spin3.stop();
       // 删除模板
       spin4.start();
-      // execSync(`rm -rf ${projectScaffold}`);
+      execSync(`rm -rf ${projectScaffold}`);
       // execSync('npm install', {cwd: pathStr(projectName)});
       // spin4.stop();
     });
