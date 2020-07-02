@@ -63,7 +63,9 @@ async function run() {
       spin4.start();
       execSync(`rm -rf ${projectScaffold}`);
       // execSync('npm install', {cwd: pathStr(projectName)});
-      // spin4.stop();
+      spin4.stop();
+      process.exit();
+
     });
   } catch (error) {
     console.log(error)
