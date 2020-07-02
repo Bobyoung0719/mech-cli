@@ -56,12 +56,16 @@ async function run() {
     await cloneWareHouseTemp(scaffoldPool[projectScaffold]);
 
     // 拷贝模板到项目中仓库中
-    copyTempToProject(projectScaffold, projectName, projectAuthor, async () => {
+    copyTempToProject(projectScaffold, projectName, projectAuthor, () => {
       // execSync(`git remote set-url origin ${cloneUrl}`, {cwd: pathStr(projectName)});
       spin3.stop();
       // 删除模板
       spin4.start();
-      execSync(`rm -rf ${projectScaffold}`);
+
+      setTimeout(() => {
+        execSync(`rm -rf ${projectScaffold}`);
+      }, 1000);
+      
       // execSync('npm install', {cwd: pathStr(projectName)});
       spin4.stop();
       process.exit();
